@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Baked-Metric</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        /* Color Palette - Light (Warm Clay) */
+        --bg-color: #E6E2DA;
+        --text-main: #57534E; /* Stone 700 */
+        --text-sub: #78716c;  /* Stone 500 */
+        --text-muted: #A8A29E; /* Stone 400 */
+        --accent: #CA8A04; /* Earthy Yellow/Orange */
+        --accent-hover: #A16207;
+        --accent-bg: #fef3c7; /* Amber 100 */
+        --hover-bg: rgba(0,0,0,0.05);
+
+        /* Shadows - Light */
+        --shadow-light: rgba(255, 255, 255, 0.8);
+        --shadow-dark: rgba(185, 180, 170, 0.7);
+        
+        /* Pan Visual Colors - Light */
+        --pan-source-start: #a8a29e;
+        --pan-source-end: #e7e5e4;
+        --pan-target-start: #d97706;
+        --pan-target-end: #fbbf24;
+        --pan-shadow-flood: #44403c;
+        --pan-highlight: white;
+      }
+
+      [data-theme="dark"] {
+        /* Color Palette - Dark (Deep Earth/Stone) */
+        --bg-color: #292524; /* Stone 800 */
+        --text-main: #E6E2DA; /* Light Beige */
+        --text-sub: #a8a29e;  /* Stone 400 */
+        --text-muted: #57534e; /* Stone 600 */
+        --accent: #F59E0B; /* Amber 500 */
+        --accent-hover: #D97706;
+        --accent-bg: rgba(245, 158, 11, 0.2);
+        --hover-bg: rgba(255,255,255,0.1);
+
+        /* Shadows - Dark */
+        --shadow-light: rgba(255, 255, 255, 0.08); /* Subtle highlight */
+        --shadow-dark: rgba(0, 0, 0, 0.5); /* Deep shadow */
+
+        /* Pan Visual Colors - Dark */
+        --pan-source-start: #44403c;
+        --pan-source-end: #57534e;
+        --pan-target-start: #b45309;
+        --pan-target-end: #d97706;
+        --pan-shadow-flood: #000000;
+        --pan-highlight: rgba(255,255,255,0.2);
+      }
+
+      html {
+        overflow-y: scroll;
+      }
+
+      body {
+        font-family: 'Nunito', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      
+      /* Neumorphism - Outset (Floating) */
+      .neu-out {
+        background-color: var(--bg-color);
+        box-shadow: 
+          9px 9px 18px var(--shadow-dark), 
+          -9px -9px 18px var(--shadow-light);
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      /* Neumorphism - Inset (Pressed/Deep) */
+      .neu-in {
+        background-color: var(--bg-color);
+        box-shadow: 
+          inset 6px 6px 12px 0 var(--shadow-dark), 
+          inset -6px -6px 12px 0 var(--shadow-light);
+        border-radius: 15px;
+        border: 1px solid rgba(255,255,255,0.02);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      /* Neumorphism - Button Active State */
+      .neu-btn {
+        transition: all 0.2s ease;
+      }
+      .neu-btn:active, .neu-btn.active {
+        box-shadow: 
+          inset 4px 4px 8px var(--shadow-dark), 
+          inset -4px -4px 8px var(--shadow-light);
+        transform: translateY(1px);
+        color: var(--accent);
+      }
+      .neu-btn:hover {
+        transform: translateY(-2px);
+      }
+      .neu-btn:active:hover {
+        transform: translateY(1px);
+      }
+
+      /* Range Slider Styling */
+      input[type=range] {
+        -webkit-appearance: none;
+        width: 100%;
+        background: transparent;
+      }
+      input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 28px;
+        width: 28px;
+        border-radius: 50%;
+        background: var(--bg-color);
+        box-shadow: 
+          5px 5px 10px var(--shadow-dark), 
+          -5px -5px 10px var(--shadow-light);
+        cursor: pointer;
+        margin-top: -10px;
+        border: 2px solid rgba(255,255,255,0.2);
+        position: relative;
+        transition: all 0.2s;
+      }
+      input[type=range]::-webkit-slider-thumb:hover {
+        transform: scale(1.1);
+        border-color: var(--accent);
+      }
+      input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 8px;
+        cursor: pointer;
+        background: var(--bg-color);
+        border-radius: 999px;
+        box-shadow: 
+          inset 2px 2px 5px var(--shadow-dark), 
+          inset -2px -2px 5px var(--shadow-light);
+      }
+
+      /* Scrollbar - Claymorphic Integration */
+      /* The track mimics an inset 'groove' and the thumb mimics a 'pill' floating inside */
+      ::-webkit-scrollbar {
+        width: 16px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background-color: var(--bg-color);
+        box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background-color: var(--text-muted);
+        border-radius: 20px;
+        border: 5px solid var(--bg-color); /* Creates the floating padding effect */
+        background-clip: content-box;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--text-sub);
+      }
+
+      /* Firefox */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--text-muted) var(--bg-color);
+      }
+
+      /* Utilities */
+      .text-shadow {
+        text-shadow: 1px 1px 0px rgba(255,255,255,0.2);
+      }
+      
+      /* Clean Inputs */
+      input[type=number]::-webkit-inner-spin-button, 
+      input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
