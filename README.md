@@ -25,7 +25,7 @@ Baking is not an art; it is chemistry. While generic conversion tools treat ever
 
 Most recipes fail not because of technique, but because of imprecise translation. A cup of flour weighs significantly less than a cup of sugar, and 350°F behaves differently at sea level than it does in Denver. This application bridges the gap between recipe intent and environmental reality.
 
-Built with a "Claymorphic" soft-UI design system, it feels as natural and tactile as the ingredients themselves.
+Built with a soft-UI design system, it feels as natural and tactile as the ingredients themselves.
 
 ## Core Utilities
 
